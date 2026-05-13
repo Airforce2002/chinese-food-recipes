@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chinese-food-recipes.chinafun.workers.dev/sitemap.xml
