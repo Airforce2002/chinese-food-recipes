@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredients | Wok & Roll</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a1a;
+            --paper: #faf9f7;
+            --cream: #f5f3ef;
+            --accent: #c41e3a;
+            --accent-light: #e8d4d8;
+            --sage: #7d8471;
+            --gold: #b8860b;
+            --rule: #d4d0c8;
+            --text: #3d3d3d;
+            --text-light: #6b6b6b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--paper);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 500; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1.5rem 0; transition: all 0.4s ease;
+            background: rgba(250, 249, 247, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 0 var(--rule);
+        }
+        .nav-inner {
+            max-width: 1400px; margin: 0 auto; padding: 0 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem;
+            font-weight: 600; color: var(--ink); text-decoration: none;
+        }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 3rem; list-style: none; }
+        .nav-links a {
+            text-decoration: none; color: var(--text); font-size: 0.9rem;
+            font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+        /* Hero */
+        .hero {
+            padding: 10rem 3rem 6rem;
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem;
+            align-items: center;
+        }
+        .hero-content { order: 1; }
+        .hero-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 { font-size: 4rem; line-height: 1.05; color: var(--ink); margin-bottom: 1.5rem; letter-spacing: -0.03em; }
+        .hero p { font-size: 1.2rem; color: var(--text-light); max-width: 500px; margin-bottom: 2rem; }
+        .hero-search {
+            display: flex; align-items: center; gap: 0.75rem; background: white;
+            padding: 1rem 1.5rem; border: 1px solid var(--rule); max-width: 400px;
+        }
+        .hero-search input { border: none; background: transparent; font-family: inherit; font-size: 1rem; width: 100%; outline: none; }
+        .hero-search svg { width: 20px; height: 20px; stroke: var(--text-light); flex-shrink: 0; }
+        .hero-image { order: 2; position: relative; height: 500px; border-radius: 8px; overflow: hidden; }
+        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Categories */
+        .categories-section { background: var(--cream); padding: 4rem 3rem; }
+        .categories-inner { max-width: 1400px; margin: 0 auto; }
+        .categories-header { text-align: center; margin-bottom: 2rem; }
+        .categories-header h2 { font-size: 2rem; margin-bottom: 0.5rem; }
+        .category-tabs { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .category-tab {
+            padding: 0.75rem 1.5rem; border: 1px solid var(--rule); background: white;
+            font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;
+        }
+        .category-tab:hover, .category-tab.active { background: var(--ink); color: white; border-color: var(--ink); }
+
+        /* Ingredients Grid */
+        .ingredients-section { padding: 5rem 3rem; max-width: 1400px; margin: 0 auto; }
+        .section-header {
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-bottom: 3rem; padding-bottom: 1rem; border-bottom: 1px solid var(--rule);
+        }
+        .section-title { font-size: 2rem; }
+        .ingredient-count { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-light); }
+        .ingredients-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+        .ingredient-card {
+            background: white; border: 1px solid var(--rule); overflow: hidden;
+            transition: all 0.4s ease; cursor: pointer;
+        }
+        .ingredient-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+        .ingredient-image { height: 200px; overflow: hidden; }
+        .ingredient-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .ingredient-card:hover .ingredient-image img { transform: scale(1.05); }
+        .ingredient-body { padding: 1.5rem; }
+        .ingredient-category {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .ingredient-name { font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--ink); }
+        .ingredient-chinese { font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem; }
+        .ingredient-desc { font-size: 0.9rem; color: var(--text-light); }
+        .ingredient-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+        .ingredient-tag {
+            font-size: 0.75rem; padding: 0.25rem 0.75rem; background: var(--cream);
+            color: var(--text-light); border-radius: 2px;
+        }
+
+        /* Featured Ingredient */
+        .featured-section { background: var(--sage); color: white; padding: 6rem 3rem; }
+        .featured-inner {
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: center;
+        }
+        .featured-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+        .featured-title { font-size: 3rem; margin-bottom: 1.5rem; line-height: 1.1; }
+        .featured-desc { font-size: 1.1rem; color: rgba(255,255,255,0.9); line-height: 1.8; margin-bottom: 2rem; }
+        .featured-image { position: relative; }
+        .featured-image img { width: 100%; height: 450px; object-fit: cover; border-radius: 8px; }
+        .featured-uses { margin-top: 2rem; }
+        .featured-uses h4 { font-size: 1rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .uses-list { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+        .use-item {
+            padding: 0.5rem 1rem; background: rgba(255,255,255,0.2);
+            font-size: 0.9rem; border-radius: 2px;
+        }
+
+        /* Pantry Essentials */
+        .pantry-section { padding: 5rem 3rem; background: var(--cream); }
+        .pantry-inner { max-width: 1400px; margin: 0 auto; }
+        .pantry-header { text-align: center; margin-bottom: 3rem; }
+        .pantry-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .pantry-header p { color: var(--text-light); max-width: 600px; margin: 0 auto; }
+        .pantry-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .pantry-item {
+            background: white; padding: 2rem; text-align: center; border: 1px solid var(--rule);
+        }
+        .pantry-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .pantry-name { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .pantry-desc { font-size: 0.85rem; color: var(--text-light); }
+
+        /* Substitute Guide */
+        .substitute-section { padding: 5rem 3rem; max-width: 1400px; margin: 0 auto; }
+        .substitute-header { text-align: center; margin-bottom: 3rem; }
+        .substitute-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .substitute-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+        .sub-card {
+            background: white; border: 1px solid var(--rule); padding: 2rem;
+        }
+        .sub-card h4 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--ink); }
+        .sub-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-top: 1px solid var(--rule); }
+        .sub-item:last-child { border-bottom: none; }
+        .sub-original { color: var(--text-light); }
+        .sub-arrow { color: var(--accent); }
+        .sub-replacement { font-weight: 500; }
+
+        /* Footer */
+        footer { background: var(--ink); color: white; padding: 4rem 3rem 2rem; }
+        .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; }
+        .footer-brand h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .footer-brand h3 span { color: var(--accent); }
+        .footer-brand p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        .footer-links h4 { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); margin-bottom: 1.5rem; font-weight: 400; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 0.75rem; }
+        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-links a:hover { color: white; }
+        .footer-bottom { max-width: 1400px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; padding-top: 8rem; }
+            .hero-image { display: none; }
+            .ingredients-grid { grid-template-columns: repeat(2, 1fr); }
+            .featured-inner { grid-template-columns: 1fr; }
+            .pantry-grid { grid-template-columns: repeat(2, 1fr); }
+            .substitute-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .categories-section, .ingredients-section, .featured-section, .pantry-section, .substitute-section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .ingredients-grid { grid-template-columns: 1fr; }
+            .category-tabs { gap: 0.5rem; }
+            .pantry-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="chinese-food-magazine-v2.html" class="logo">Wok <span>&</span> Roll</a>
+            <ul class="nav-links">
+                <li><a href="chinese-food-magazine-v2.html">Recipes</a></li>
+                <li><a href="techniques.html">Techniques</a></li>
+                <li><a href="ingredients.html" class="active">Ingredients</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-label">Ingredient Guide</div>
+            <h1>Chinese Pantry Essentials</h1>
+            <p>From fermented black beans to Sichuan peppercorns, discover the ingredients that define Chinese cuisine. Learn what they taste like, how to use them, and where to find them.</p>
+            <div class="hero-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" placeholder="Search ingredients..." id="searchInput">
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80" alt="Chinese Ingredients">
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories-section">
+        <div class="categories-inner">
+            <div class="categories-header">
+                <h2>Browse by Category</h2>
+            </div>
+            <div class="category-tabs">
+                <button class="category-tab active">All</button>
+                <button class="category-tab">Sauces & Condiments</button>
+                <button class="category-tab">Aromatics</button>
+                <button class="category-tab">Proteins</button>
+                <button class="category-tab">Noodles & Grains</button>
+                <button class="category-tab">Spices</button>
+                <button class="category-tab">Oils & Vinegars</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ingredients Grid -->
+    <section class="ingredients-section">
+        <div class="section-header">
+            <h2 class="section-title">Essential Ingredients</h2>
+            <span class="ingredient-count">Showing 15 ingredients</span>
+        </div>
+
+        <div class="ingredients-grid">
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=800&q=80" alt="Soy Sauce">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Sauces</div>
+                    <h3 class="ingredient-name">Soy Sauce</h3>
+                    <div class="ingredient-chinese">酱油 (Jiàngyóu)</div>
+                    <p class="ingredient-desc">The cornerstone of Chinese cooking. Use light soy for seasoning, dark soy for color and sweetness.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Umami</span>
+                        <span class="ingredient-tag">Fermented</span>
+                        <span class="ingredient-tag">Essential</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&q=80" alt="Rice Vinegar">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Vinegars</div>
+                    <h3 class="ingredient-name">Rice Vinegar</h3>
+                    <div class="ingredient-chinese">米醋 (Mǐcù)</div>
+                    <p class="ingredient-desc">Mild, slightly sweet vinegar essential for dressings, dipping sauces, and balanced flavors.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Acidic</span>
+                        <span class="ingredient-tag">Mild</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1583321500900-82807e458f3c?w=800&q=80" alt="Sichuan Peppercorn">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Spices</div>
+                    <h3 class="ingredient-name">Sichuan Peppercorn</h3>
+                    <div class="ingredient-chinese">花椒 (Huājiāo)</div>
+                    <p class="ingredient-desc">Creates the famous "ma la" (numbing-spicy) sensation. Citrusy with a unique tingling quality.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Numbing</span>
+                        <span class="ingredient-tag">Citrus</span>
+                        <span class="ingredient-tag">Sichuan</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80" alt="Garlic">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Aromatics</div>
+                    <h3 class="ingredient-name">Garlic</h3>
+                    <div class="ingredient-chinese">大蒜 (Dàsuàn)</div>
+                    <p class="ingredient-desc">The most fundamental aromatic. Used in nearly every savory dish. Slice, mince, or crushed.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Aromatic</span>
+                        <span class="ingredient-tag">Essential</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=800&q=80" alt="Ginger">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Aromatics</div>
+                    <h3 class="ingredient-name">Fresh Ginger</h3>
+                    <div class="ingredient-chinese">姜 (Jiāng)</div>
+                    <p class="ingredient-desc">Warm, zesty root that adds depth. Never skip in stir-fries or braised dishes.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Aromatic</span>
+                        <span class="ingredient-tag">Warming</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1617655268498-dd7bb05a3f6e?w=800&q=80" alt="Oyster Sauce">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Sauces</div>
+                    <h3 class="ingredient-name">Oyster Sauce</h3>
+                    <div class="ingredient-chinese">蚝油 (Háoyóu)</div>
+                    <p class="ingredient-desc">Thick, savory sauce made from oysters. Adds rich umami depth to vegetables and meats.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Umami</span>
+                        <span class="ingredient-tag">Savory</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=800&q=80" alt="Sesame Oil">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Oils</div>
+                    <h3 class="ingredient-name">Sesame Oil</h3>
+                    <div class="ingredient-chinese">香油 (Xiāngyóu)</div>
+                    <p class="ingredient-desc">Aromatic finishing oil. Never cook with it — add at the end to preserve its delicate flavor.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Aromatic</span>
+                        <span class="ingredient-tag">Finishing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1528751014936-863e6e7a319c?w=800&q=80" alt="Doubanjiang">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Sauces</div>
+                    <h3 class="ingredient-name">Doubanjiang</h3>
+                    <div class="ingredient-chinese">豆瓣酱 (Dòubànjiàng)</div>
+                    <p class="ingredient-desc">Fermented chili bean paste. The soul of Sichuan cooking. Spicy, savory, and complex.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Spicy</span>
+                        <span class="ingredient-tag">Fermented</span>
+                        <span class="ingredient-tag">Sichuan</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Cornstarch">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Thickeners</div>
+                    <h3 class="ingredient-name">Cornstarch</h3>
+                    <div class="ingredient-chinese">玉米淀粉 (Yùmǐ diànfěn)</div>
+                    <p class="ingredient-desc">Essential for velveting proteins and thickening sauces. Creates glossy, silky textures.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Thickener</span>
+                        <span class="ingredient-tag">Tenderizer</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=800&q=80" alt="Five Spice">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Spices</div>
+                    <h3 class="ingredient-name">Five Spice</h3>
+                    <div class="ingredient-chinese">五香粉 (Wǔxiāng fěn)</div>
+                    <p class="ingredient-desc">Balance of sweet, sour, bitter, salty, and umami. Perfect for pork and roasted dishes.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Aromatic</span>
+                        <span class="ingredient-tag">Pork</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1595855759920-86582396756a?w=800&q=80" alt="Shaoxing Wine">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Wines</div>
+                    <h3 class="ingredient-name">Shaoxing Wine</h3>
+                    <div class="ingredient-chinese">绍兴酒 (Shàoxīng jiǔ)</div>
+                    <p class="ingredient-desc">Cooking rice wine that removes gamey flavors and adds depth. Essential for marinade.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Alcohol</span>
+                        <span class="ingredient-tag">Deodorizing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=800&q=80" alt="Tofu">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Proteins</div>
+                    <h3 class="ingredient-name">Silken Tofu</h3>
+                    <div class="ingredient-chinese">嫩豆腐 (Nèn dòufu)</div>
+                    <p class="ingredient-desc">Velvety, delicate tofu for soups and mapo tofu. Handle gently to keep intact.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Plant Protein</span>
+                        <span class="ingredient-tag">Delicate</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=800&q=80" alt="Bean Sprouts">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Vegetables</div>
+                    <h3 class="ingredient-name">Bean Sprouts</h3>
+                    <div class="ingredient-chinese">豆芽 (Dòuyá)</div>
+                    <p class="ingredient-desc">Mung bean sprouts add crunch to stir-fries and noodle dishes. Quick-coooking.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Crunchy</span>
+                        <span class="ingredient-tag">Quick</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1620574331486-85e4c6347564?w=800&q=80" alt="Scallions">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Aromatics</div>
+                    <h3 class="ingredient-name">Scallions</h3>
+                    <div class="ingredient-chinese">葱 (Cōng)</div>
+                    <p class="ingredient-desc">Green onions used as garnish and aromatics. Both white and green parts are used.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Aromatic</span>
+                        <span class="ingredient-tag">Garnish</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ingredient-card">
+                <div class="ingredient-image">
+                    <img src="https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=800&q=80" alt="Chili Oil">
+                </div>
+                <div class="ingredient-body">
+                    <div class="ingredient-category">Oils</div>
+                    <h3 class="ingredient-name">Chili Oil</h3>
+                    <div class="ingredient-chinese">辣椒油 (Làjiāo yóu)</div>
+                    <p class="ingredient-desc">Infused oil with chili flakes. Adds heat and beautiful red color to dishes.</p>
+                    <div class="ingredient-tags">
+                        <span class="ingredient-tag">Spicy</span>
+                        <span class="ingredient-tag">Coloring</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured: Soy Sauce -->
+    <section class="featured-section">
+        <div class="featured-inner">
+            <div class="featured-text">
+                <div class="featured-label">Ingredient Spotlight</div>
+                <h2 class="featured-title">Soy Sauce: Liquid Umami</h2>
+                <p class="featured-desc">Soy sauce is the blood of Chinese cooking. This fermented condiment of soybeans and wheat carries thousands of years of culinary tradition in every drop. There are two essential types: light soy (for seasoning) and dark soy (for color and sweetness).</p>
+                <p class="featured-desc">Quality matters. Look for naturally brewed soy sauce with minimal ingredients. The label should list soybeans, wheat, salt, and water — nothing more.</p>
+                <div class="featured-uses">
+                    <h4>Best Uses</h4>
+                    <div class="uses-list">
+                        <span class="use-item">Stir Frying</span>
+                        <span class="use-item">Marinades</span>
+                        <span class="use-item">Dipping Sauce</span>
+                        <span class="use-item">Braising</span>
+                        <span class="use-item">Finishing</span>
+                    </div>
+                </div>
+            </div>
+            <div class="featured-image">
+                <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=1000&q=80" alt="Soy Sauce">
+            </div>
+        </div>
+    </section>
+
+    <!-- Pantry Essentials -->
+    <section class="pantry-section">
+        <div class="pantry-inner">
+            <div class="pantry-header">
+                <h2>Your Chinese Pantry</h2>
+                <p>Start with these basics and expand as you explore more dishes</p>
+            </div>
+            <div class="pantry-grid">
+                <div class="pantry-item">
+                    <div class="pantry-icon">🫘</div>
+                    <h3 class="pantry-name">Soy Sauces</h3>
+                    <p class="pantry-desc">Light + Dark soy sauce</p>
+                </div>
+                <div class="pantry-item">
+                    <div class="pantry-icon">🍶</div>
+                    <h3 class="pantry-name">Rice Wine</h3>
+                    <p class="pantry-desc">Shaoxing cooking wine</p>
+                </div>
+                <div class="pantry-item">
+                    <div class="pantry-icon">🧄</div>
+                    <h3 class="pantry-name">Aromatics</h3>
+                    <p class="pantry-desc">Garlic, ginger, scallions</p>
+                </div>
+                <div class="pantry-item">
+                    <div class="pantry-icon">🫙</div>
+                    <h3 class="pantry-name">Oils</h3>
+                    <p class="pantry-desc">Vegetable + toasted sesame</p>
+                </div>
+                <div class="pantry-item">
+                    <div class="pantry-icon">🍜</div>
+                    <h3 class="pantry-name">Vinegar</h3>
+                    <p class="pantry-desc">Chinkiang or rice vinegar</p>
+                </div>
+                <div class="pantry-item">
+                    <div class="pantry-icon">🌶️</div>
+                    <h3 class="pantry-name">Chili</h3>
+                    <p class="pantry-desc">Dried chilies + chili oil</p>
+                </div>
+                <div class="pantry-item">
+                    <div class="pantry-icon">🥢</div>
+                    <h3 class="pantry-name">Thickener</h3>
+                    <p class="pantry-desc">Cornstarch</p>
+                </div>
+                <div class="pantry-item">
+                    <div class="pantry-icon">🫘</div>
+                    <h3 class="pantry-name">Oyster Sauce</h3>
+                    <p class="pantry-desc">Premium quality</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Substitutes -->
+    <section class="substitute-section">
+        <div class="substitute-header">
+            <h2>Ingredient Substitutes</h2>
+            <p>When you can't find the authentic ingredient</p>
+        </div>
+        <div class="substitute-grid">
+            <div class="sub-card">
+                <h4>Common Substitutions</h4>
+                <div class="sub-item">
+                    <span class="sub-original">Light Soy Sauce</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Regular soy sauce</span>
+                </div>
+                <div class="sub-item">
+                    <span class="sub-original">Shaoxing Wine</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Dry sherry</span>
+                </div>
+                <div class="sub-item">
+                    <span class="sub-original">Rice Vinegar</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">White wine vinegar</span>
+                </div>
+                <div class="sub-item">
+                    <span class="sub-original">Sesame Oil</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Peanut oil + few drops EO</span>
+                </div>
+                <div class="sub-item">
+                    <span class="sub-original">Oyster Sauce</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Soy + mushroom sauce</span>
+                </div>
+            </div>
+            <div class="sub-card">
+                <h4>Harder to Substitute</h4>
+                <div class="sub-item">
+                    <span class="sub-original">Doubanjiang</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Gochujang + soy (partial)</span>
+                </div>
+                <div class="sub-item">
+                    <span class="sub-original">Sichuan Peppercorn</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Black pepper (no numbing)</span>
+                </div>
+                <div class="sub-item">
+                    <span class="sub-original">Chinkiang Vinegar</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Balsamic (different flavor)</span>
+                </div>
+                <div class="sub-item">
+                    <span class="sub-original">Five Spice</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Star anise + cinnamon</span>
+                </div>
+                <div class="sub-item">
+                    <span class="sub-original">Black Vinegar</span>
+                    <span class="sub-arrow">→</span>
+                    <span class="sub-replacement">Balsamic + soy</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <h3>Wok <span>&</span> Roll</h3>
+                <p>Making authentic Chinese cooking accessible to home cooks everywhere since 2020.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="chinese-food-magazine-v2.html">All Recipes</a></li>
+                    <li><a href="techniques.html">Techniques</a></li>
+                    <li><a href="ingredients.html">Ingredients</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Learn</h4>
+                <ul>
+                    <li><a href="#">Sauce Guide</a></li>
+                    <li><a href="#">Spice Profiles</a></li>
+                    <li><a href="#">Pantry Setup</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#">Newsletter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2024 Wok & Roll. All rights reserved.</span>
+            <span>Made with ❤️ for home cooks everywhere</span>
+        </div>
+    </footer>
+
+    <script>
+        // Simple search filter
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const search = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.ingredient-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(search) ? 'block' : 'none';
+            });
+        });
+
+        // Category tabs
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

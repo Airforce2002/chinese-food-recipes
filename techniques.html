@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techniques | Wok & Roll</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a1a;
+            --paper: #faf9f7;
+            --cream: #f5f3ef;
+            --accent: #c41e3a;
+            --accent-light: #e8d4d8;
+            --sage: #7d8471;
+            --gold: #b8860b;
+            --rule: #d4d0c8;
+            --text: #3d3d3d;
+            --text-light: #6b6b6b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--paper);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 500; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1.5rem 0; transition: all 0.4s ease;
+            background: rgba(250, 249, 247, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 0 var(--rule);
+        }
+        .nav-inner {
+            max-width: 1400px; margin: 0 auto; padding: 0 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem;
+            font-weight: 600; color: var(--ink); text-decoration: none;
+        }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 3rem; list-style: none; }
+        .nav-links a {
+            text-decoration: none; color: var(--text); font-size: 0.9rem;
+            font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+        /* Hero */
+        .hero {
+            padding: 10rem 3rem 6rem;
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem;
+            align-items: center;
+        }
+        .hero-content { padding-right: 2rem; }
+        .hero-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 { font-size: 4rem; line-height: 1.05; color: var(--ink); margin-bottom: 1.5rem; letter-spacing: -0.03em; }
+        .hero p { font-size: 1.2rem; color: var(--text-light); max-width: 500px; }
+        .hero-image { position: relative; height: 500px; border-radius: 8px; overflow: hidden; }
+        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Intro */
+        .intro-section { background: var(--cream); padding: 5rem 3rem; }
+        .intro-inner { max-width: 1400px; margin: 0 auto; text-align: center; }
+        .intro-inner h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .intro-inner p { max-width: 700px; margin: 0 auto 3rem; color: var(--text-light); font-size: 1.1rem; }
+
+        /* Techniques Grid */
+        .techniques-section { padding: 5rem 3rem; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .section-header p { color: var(--text-light); max-width: 600px; margin: 0 auto; }
+
+        .tech-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+        .tech-card {
+            background: white; border: 1px solid var(--rule);
+            padding: 2.5rem; position: relative; transition: all 0.4s ease;
+        }
+        .tech-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+        .tech-number {
+            font-family: 'Playfair Display', serif; font-size: 4rem;
+            color: var(--accent-light); line-height: 1; margin-bottom: 1.5rem;
+        }
+        .tech-category {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+        .tech-card h3 { font-size: 1.6rem; margin-bottom: 1rem; color: var(--ink); }
+        .tech-card p { color: var(--text-light); margin-bottom: 1.5rem; }
+        .tech-steps { list-style: none; }
+        .tech-steps li {
+            padding: 0.75rem 0; border-top: 1px solid var(--rule);
+            font-size: 0.95rem; display: flex; align-items: flex-start; gap: 1rem;
+        }
+        .tech-steps li::before { content: '→'; color: var(--accent); font-weight: bold; }
+
+        /* Featured Technique */
+        .featured-section { background: var(--ink); color: white; padding: 6rem 3rem; }
+        .featured-inner {
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: center;
+        }
+        .featured-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        .featured-title { font-size: 3rem; margin-bottom: 1.5rem; line-height: 1.1; }
+        .featured-desc { font-size: 1.1rem; color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 2rem; }
+        .featured-image { position: relative; }
+        .featured-image img { width: 100%; height: 450px; object-fit: cover; border-radius: 8px; }
+
+        /* Tips Section */
+        .tips-section { padding: 5rem 3rem; background: var(--cream); }
+        .tips-inner { max-width: 1400px; margin: 0 auto; }
+        .tips-header { text-align: center; margin-bottom: 3rem; }
+        .tips-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .tip-card { background: white; padding: 2rem; border: 1px solid var(--rule); }
+        .tip-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .tip-title { font-size: 1.2rem; margin-bottom: 0.75rem; }
+        .tip-text { font-size: 0.9rem; color: var(--text-light); }
+
+        /* Mastery Section */
+        .mastery-section { padding: 5rem 3rem; max-width: 1400px; margin: 0 auto; }
+        .mastery-header { text-align: center; margin-bottom: 4rem; }
+        .mastery-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .mastery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+        .mastery-item { text-align: center; padding: 2rem; border: 1px solid var(--rule); }
+        .mastery-value { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--accent); margin-bottom: 0.5rem; }
+        .mastery-label { font-size: 0.9rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* Footer */
+        footer { background: var(--ink); color: white; padding: 4rem 3rem 2rem; }
+        .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; }
+        .footer-brand h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .footer-brand h3 span { color: var(--accent); }
+        .footer-brand p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        .footer-links h4 { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); margin-bottom: 1.5rem; font-weight: 400; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 0.75rem; }
+        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-links a:hover { color: white; }
+        .footer-bottom { max-width: 1400px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr; padding-top: 8rem; }
+            .hero-image { display: none; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .featured-inner { grid-template-columns: 1fr; }
+            .mastery-grid { grid-template-columns: repeat(2, 1fr); }
+            .tips-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .techniques-section, .featured-section, .tips-section, .mastery-section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .mastery-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="chinese-food-magazine-v2.html" class="logo">Wok <span>&</span> Roll</a>
+            <ul class="nav-links">
+                <li><a href="chinese-food-magazine-v2.html">Recipes</a></li>
+                <li><a href="techniques.html" class="active">Techniques</a></li>
+                <li><a href="ingredients.html">Ingredients</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-label">Master the Craft</div>
+            <h1>Chinese Cooking Techniques</h1>
+            <p>From the breath of the wok to the precision of knife work, learn the foundational techniques that have defined Chinese cuisine for millennia.</p>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1200&q=80" alt="Stir Frying">
+        </div>
+    </section>
+
+    <!-- Intro -->
+    <section class="intro-section">
+        <div class="intro-inner">
+            <h2>The Eight Essential Techniques</h2>
+            <p>Every dish in Chinese cuisine derives from one or more of these fundamental cooking methods. Master these, and you'll unlock the ability to create authentic flavors at home.</p>
+        </div>
+    </section>
+
+    <!-- Techniques Grid -->
+    <section class="techniques-section">
+        <div class="section-header">
+            <h2>Core Techniques</h2>
+            <p>These eight methods form the foundation of Chinese cooking</p>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-number">01</div>
+                <div class="tech-category">Bao / 爆</div>
+                <h3>Stir Frying (Wok Hei)</h3>
+                <p>High-heat, rapid cooking in a wok that creates the signature "breath of the wok" flavor. Essential for vegetables, meats, and combination dishes.</p>
+                <ul class="tech-steps">
+                    <li>Heat wok until smoking (300°C / 570°F)</li>
+                    <li>Add oil, swirl to coat, heat until shimmering</li>
+                    <li>Add aromatics first (ginger, garlic)</li>
+                    <li>Cook protein quickly, remove</li>
+                    <li>Cook vegetables, return protein, season</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-number">02</div>
+                <div class="tech-category">Zhou / 蒸</div>
+                <h3>Steaming</h3>
+                <p>Preserves nutrients and natural flavors. Used for fish, dim sum, buns, and delicate proteins. The gentle heat keeps ingredients moist and tender.</p>
+                <ul class="tech-steps">
+                    <li>Bring water to full boil before steaming</li>
+                    <li>Use bamboo or metal steamers lined with parchment</li>
+                    <li>Don't overcrowd — steam circulates</li>
+                    <li>Timing starts when steam appears</li>
+                    <li>Rest fish 2 minutes after cooking</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-number">03</div>
+                <div class="tech-category">Guo / 锅</div>
+                <h3>Pan Frying</h3>
+                <p>Medium-high heat cooking in a flat-bottomed pan with oil. Creates crispy bottoms while keeping interiors tender. Perfect for dumplings, pancakes, and breaded items.</p>
+                <ul class="tech-steps">
+                    <li>Heat pan first, then add oil</li>
+                    <li>Test with water droplet — should dance</li>
+                    <li>Don't move food until golden crust forms</li>
+                    <li>Use enough oil to coat the pan bottom</li>
+                    <li>For dumplings: add water and cover for steamed effect</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-number">04</div>
+                <div class="tech-category">Zhu / 煮</div>
+                <h3>Boiling & Braising</h3>
+                <p>Slow, wet cooking that breaks down collagen and infuses deep flavors. Used for soups, braised dishes, and noodles. Patience is the key ingredient.</p>
+                <ul class="tech-steps">
+                    <li>For braising: sear meat first for flavor</li>
+                    <li>Add aromatics and seasonings</li>
+                    <li>Use enough liquid to barely cover ingredients</li>
+                    <li>Cook low and slow (80-90°C / 175-195°F)</li>
+                    <li>Braising improves with resting — reheat to serve</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-number">05</div>
+                <div class="tech-category">Men / 焖</div>
+                <h3>Pressure Cooking</h3>
+                <p>Modern technique that dramatically reduces cooking time while developing deep flavors. Perfect for tough cuts like pork belly and beef that normally need hours.</p>
+                <ul class="tech-steps">
+                    <li>Brown ingredients first for Maillard reaction</li>
+                    <li>Add liquid — don't exceed max line</li>
+                    <li>Natural release for tough cuts</li>
+                    <li>Quick release for vegetables</li>
+                    <li>Reduce sauce after cooking if needed</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-number">06</div>
+                <div class="tech-category">Shao / 烧</div>
+                <h3>Red Cooking (Hong Shao)</h3>
+                <p>Slow braising in soy sauce and sugar creates glossy, caramelized dishes. The signature technique for red-braised pork, chicken, and eggs.</p>
+                <ul class="tech-steps">
+                    <li>Use both dark and light soy sauce</li>
+                    <li>Add rock sugar or brown sugar</li>
+                    <li>Caramelize sauce before adding protein</li>
+                    <li>Cook covered on low heat for 1-2 hours</li>
+                    <li>Final reduction creates lacquered glaze</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-number">07</div>
+                <div class="tech-category">Zheng / 整</div>
+                <h3>Roasting & Grilling</h3>
+                <p>Dry, high-heat cooking for crispy skin and charred flavors. Used for char siu, Peking duck, and skewered meats. Traditionally done in clay ovens.</p>
+                <ul class="tech-steps">
+                    <li>Dry skin overnight for extra crispiness</li>
+                    <li>High heat initially (220°C / 425°F)</li>
+                    <li>Glaze during last 20 minutes</li>
+                    <li>Rest meat before slicing</li>
+                    <li>Char for authenticity in last moments</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <div class="tech-number">08</div>
+                <div class="tech-category">Liang / 凉</div>
+                <h3>Cold Dishes & Salads (Liang Pan)</h3>
+                <p>Served at room temperature or chilled. Often dressed with vinegar, sesame oil, and chili. Refreshing counterpoints to hot dishes in a Chinese meal.</p>
+                <ul class="tech-steps">
+                    <li>Ingredients should be cooked and cooled</li>
+                    <li>Marinate for 30 minutes minimum</li>
+                    <li>Balance: sweet, sour, salty, spicy</li>
+                    <li>Add sesame oil last to preserve aroma</li>
+                    <li>Serve at cool room temperature</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured: Wok Technique -->
+    <section class="featured-section">
+        <div class="featured-inner">
+            <div class="featured-text">
+                <div class="featured-label">In Depth</div>
+                <h2 class="featured-title">The Art of Wok Hei</h2>
+                <p class="featured-desc">Wok hei (镬气) — literally "breath of the wok" — is the soul of Chinese stir-frying. It's that smoky, charred flavor that makes restaurant dishes taste so much more exciting than home cooking. Achieving wok hei requires three elements: extremely high heat, a carbon steel wok, and quick, confident movements.</p>
+                <p class="featured-desc">The wok must reach temperatures above 300°C (570°F). Add oil only when the wok is truly hot. The oil should shimmer and flow like water, not pool. Then work fast — every second matters. The motion should be a continuous toss, never a static fry.</p>
+            </div>
+            <div class="featured-image">
+                <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=1000&q=80" alt="Wok Cooking">
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips -->
+    <section class="tips-section">
+        <div class="tips-inner">
+            <div class="tips-header">
+                <h2>Master Chef Tips</h2>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">🔥</div>
+                    <h3 class="tip-title">Heat Management</h3>
+                    <p class="tip-text">Chinese cooking uses extreme heat. Practice heating your wok until water evaporates instantly. If your exhaust fan can't handle it, use two burners simultaneously.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">⏱️</div>
+                    <h3 class="tip-title">Mise en Place</h3>
+                    <p class="tip-text">Everything ready before heat. Chinese cooking happens fast. Chop, measure, and arrange all ingredients. When the wok is hot, there's no time to prep.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">🧂</div>
+                    <h3 class="tip-title">Season in Stages</h3>
+                    <p class="tip-text">Salt early, season at end. Soy sauce added to the wok's hot edge (not directly on food) creates deeper flavor through caramelization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mastery Progress -->
+    <section class="mastery-section">
+        <div class="mastery-header">
+            <h2>Your Path to Mastery</h2>
+            <p>Progress tracking for dedicated home cooks</p>
+        </div>
+        <div class="mastery-grid">
+            <div class="mastery-item">
+                <div class="mastery-value">1</div>
+                <div class="mastery-label">Month: Basics</div>
+            </div>
+            <div class="mastery-item">
+                <div class="mastery-value">3</div>
+                <div class="mastery-label">Months: Consistency</div>
+            </div>
+            <div class="mastery-item">
+                <div class="mastery-value">6</div>
+                <div class="mastery-label">Months: Confidence</div>
+            </div>
+            <div class="mastery-item">
+                <div class="mastery-value">1+</div>
+                <div class="mastery-label">Years: Mastery</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <h3>Wok <span>&</span> Roll</h3>
+                <p>Making authentic Chinese cooking accessible to home cooks everywhere since 2020.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="chinese-food-magazine-v2.html">All Recipes</a></li>
+                    <li><a href="techniques.html">Techniques</a></li>
+                    <li><a href="ingredients.html">Ingredients</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Learn</h4>
+                <ul>
+                    <li><a href="#">Stir Frying 101</a></li>
+                    <li><a href="#">Knife Skills</a></li>
+                    <li><a href="#">Sauce Mastery</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#">Newsletter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2024 Wok & Roll. All rights reserved.</span>
+            <span>Made with ❤️ for home cooks everywhere</span>
+        </div>
+    </footer>
+</body>
+</html>

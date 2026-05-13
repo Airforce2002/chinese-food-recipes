@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Wok & Roll</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a1a;
+            --paper: #faf9f7;
+            --cream: #f5f3ef;
+            --accent: #c41e3a;
+            --accent-light: #e8d4d8;
+            --sage: #7d8471;
+            --gold: #b8860b;
+            --rule: #d4d0c8;
+            --text: #3d3d3d;
+            --text-light: #6b6b6b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--paper);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 500; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1.5rem 0; transition: all 0.4s ease;
+            background: rgba(250, 249, 247, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 0 var(--rule);
+        }
+        .nav-inner {
+            max-width: 1400px; margin: 0 auto; padding: 0 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem;
+            font-weight: 600; color: var(--ink); text-decoration: none;
+        }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 3rem; list-style: none; }
+        .nav-links a {
+            text-decoration: none; color: var(--text); font-size: 0.9rem;
+            font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+        /* Hero */
+        .hero {
+            min-height: 80vh; position: relative;
+            display: flex; align-items: center;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--ink) 0%, #2d2d2d 100%);
+        }
+        .hero-bg img {
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0.3;
+        }
+        .hero-content {
+            position: relative; z-index: 1;
+            max-width: 1400px; margin: 0 auto;
+            padding: 8rem 3rem 4rem;
+            width: 100%;
+        }
+        .hero-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 { font-size: 4.5rem; line-height: 1.05; color: white; margin-bottom: 1.5rem; letter-spacing: -0.03em; }
+        .hero p { font-size: 1.4rem; color: rgba(255,255,255,0.8); max-width: 600px; }
+
+        /* Story Section */
+        .story-section { padding: 6rem 3rem; max-width: 1400px; margin: 0 auto; }
+        .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+        .story-image { position: relative; height: 500px; border-radius: 8px; overflow: hidden; }
+        .story-image img { width: 100%; height: 100%; object-fit: cover; }
+        .story-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .story h2 { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--ink); }
+        .story p { margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text-light); }
+        .story-quote {
+            padding-left: 2rem; border-left: 3px solid var(--accent);
+            font-family: 'Playfair Display', serif; font-size: 1.4rem;
+            font-style: italic; color: var(--ink); margin: 2rem 0;
+        }
+
+        /* Mission Section */
+        .mission-section { background: var(--cream); padding: 6rem 3rem; }
+        .mission-inner { max-width: 1400px; margin: 0 auto; text-align: center; }
+        .mission-inner h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .mission-inner p { max-width: 800px; margin: 0 auto 3rem; font-size: 1.2rem; color: var(--text-light); }
+        .mission-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+        .mission-item { text-align: center; padding: 2rem; }
+        .mission-icon { font-size: 4rem; margin-bottom: 1.5rem; }
+        .mission-item h3 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--ink); }
+        .mission-item p { font-size: 1rem; color: var(--text-light); }
+
+        /* Values Section */
+        .values-section { padding: 6rem 3rem; max-width: 1400px; margin: 0 auto; }
+        .values-header { text-align: center; margin-bottom: 4rem; }
+        .values-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .values-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+        .value-card {
+            display: grid; grid-template-columns: auto 1fr; gap: 2rem;
+            padding: 2.5rem; background: white; border: 1px solid var(--rule);
+        }
+        .value-icon { font-size: 3rem; }
+        .value-content h3 { font-size: 1.3rem; margin-bottom: 0.75rem; color: var(--ink); }
+        .value-content p { color: var(--text-light); font-size: 0.95rem; }
+
+        /* Team Section */
+        .team-section { background: var(--ink); color: white; padding: 6rem 3rem; }
+        .team-inner { max-width: 1400px; margin: 0 auto; }
+        .team-header { text-align: center; margin-bottom: 4rem; }
+        .team-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .team-header p { color: rgba(255,255,255,0.7); }
+        .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; }
+        .team-member { text-align: center; }
+        .team-photo {
+            width: 180px; height: 180px; margin: 0 auto 1.5rem;
+            border-radius: 50%; overflow: hidden; border: 3px solid var(--accent);
+        }
+        .team-photo img { width: 100%; height: 100%; object-fit: cover; }
+        .team-member h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .team-role { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.75rem; }
+        .team-bio { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+
+        /* Journey Section */
+        .journey-section { padding: 6rem 3rem; background: var(--cream); }
+        .journey-inner { max-width: 1400px; margin: 0 auto; }
+        .journey-header { text-align: center; margin-bottom: 4rem; }
+        .journey-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .timeline { position: relative; padding-left: 3rem; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 2px; background: var(--rule);
+        }
+        .timeline-item { position: relative; padding-bottom: 3rem; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-dot {
+            position: absolute; left: -3rem; top: 0;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--accent); transform: translateX(-7px);
+        }
+        .timeline-year { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent); margin-bottom: 0.5rem; }
+        .timeline-item h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--ink); }
+        .timeline-item p { color: var(--text-light); }
+
+        /* Stats Section */
+        .stats-section { padding: 5rem 3rem; background: var(--accent); color: white; }
+        .stats-inner { max-width: 1400px; margin: 0 auto; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; text-align: center; }
+        .stat-item {}
+        .stat-value { font-family: 'Playfair Display', serif; font-size: 4rem; line-height: 1; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; }
+
+        /* CTA Section */
+        .cta-section { padding: 6rem 3rem; text-align: center; }
+        .cta-inner { max-width: 800px; margin: 0 auto; }
+        .cta-inner h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .cta-inner p { font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem; }
+        .cta-buttons { display: flex; justify-content: center; gap: 1rem; }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            padding: 1rem 2rem; text-decoration: none; font-weight: 500;
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em;
+            transition: all 0.3s;
+        }
+        .cta-btn.primary { background: var(--ink); color: white; }
+        .cta-btn.primary:hover { background: var(--accent); }
+        .cta-btn.secondary { background: transparent; color: var(--ink); border: 1px solid var(--rule); }
+        .cta-btn.secondary:hover { background: var(--cream); }
+
+        /* Footer */
+        footer { background: var(--ink); color: white; padding: 4rem 3rem 2rem; }
+        .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; }
+        .footer-brand h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .footer-brand h3 span { color: var(--accent); }
+        .footer-brand p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        .footer-links h4 { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.4); margin-bottom: 1.5rem; font-weight: 400; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 0.75rem; }
+        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-links a:hover { color: white; }
+        .footer-bottom { max-width: 1400px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+        @media (max-width: 1024px) {
+            .hero h1 { font-size: 3rem; }
+            .story-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .story-image { height: 400px; }
+            .mission-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .values-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            nav, .hero-content, .story-section, .mission-section, .values-section, .team-section, .journey-section, .stats-section, .cta-section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .team-grid { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; }
+            .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="chinese-food-magazine-v2.html" class="logo">Wok <span>&</span> Roll</a>
+            <ul class="nav-links">
+                <li><a href="chinese-food-magazine-v2.html">Recipes</a></li>
+                <li><a href="techniques.html">Techniques</a></li>
+                <li><a href="ingredients.html">Ingredients</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1600&q=80" alt="Chinese Cooking">
+        </div>
+        <div class="hero-content">
+            <div class="hero-label">Our Story</div>
+            <h1>Bringing Authentic Chinese Cooking to Every Kitchen</h1>
+            <p>We're on a mission to demystify Chinese cuisine and make traditional recipes accessible to home cooks everywhere.</p>
+        </div>
+    </section>
+
+    <!-- Story -->
+    <section class="story-section">
+        <div class="story-grid">
+            <div class="story-image">
+                <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=1000&q=80" alt="Traditional Cooking">
+            </div>
+            <div class="story">
+                <div class="story-label">The Beginning</div>
+                <h2>From Grandma's Kitchen to the World</h2>
+                <p>Wok & Roll started in 2020 when our founder, raised on her grandmother's Sichuan cooking, realized that most Chinese recipe sites either oversimplified dishes or assumed access to ingredients no one could find.</p>
+                <p>We set out to bridge that gap — creating recipes that respect tradition while acknowledging the reality of home kitchens around the world. Every recipe is tested multiple times, adjusted for standard home equipment, and written with clear instructions.</p>
+                <blockquote class="story-quote">
+                    "Good Chinese cooking isn't about fancy techniques. It's about understanding heat, timing, and balance."
+                </blockquote>
+                <p>Our recipes come from documented family traditions, verified against regional culinary schools, and refined through feedback from thousands of home cooks across 40+ countries.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="mission-section">
+        <div class="mission-inner">
+            <h2>Our Mission</h2>
+            <p>To preserve and share authentic Chinese culinary traditions while making them approachable for modern home cooks.</p>
+            <div class="mission-grid">
+                <div class="mission-item">
+                    <div class="mission-icon">🌏</div>
+                    <h3>Global Accessibility</h3>
+                    <p>Recipes work with ingredients available worldwide. We provide substitutions and alternatives for hard-to-find items.</p>
+                </div>
+                <div class="mission-item">
+                    <div class="mission-icon">📚</div>
+                    <h3>Cultural Preservation</h3>
+                    <p>We document regional variations and historical context. Chinese cuisine is incredibly diverse — we honor that diversity.</p>
+                </div>
+                <div class="mission-item">
+                    <div class="mission-icon">🔥</div>
+                    <h3>Practical Techniques</h3>
+                    <p>Every method is adapted for home kitchens. No restaurant equipment required — just passion and a good wok.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values -->
+    <section class="values-section">
+        <div class="values-header">
+            <h2>What We Believe</h2>
+        </div>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">🔍</div>
+                <div class="value-content">
+                    <h3>Verification Over Assumption</h3>
+                    <p>Every recipe is tested extensively. We don't publish untested recipes or pass along culinary myths without verification.</p>
+                </div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🤝</div>
+                <div class="value-content">
+                    <h3>Respect for Tradition</h3>
+                    <p>Chinese cooking has thousands of years of history. We honor traditional methods while making them work at home.</p>
+                </div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">✨</div>
+                <div class="value-content">
+                    <h3>Clarity Over Showmanship</h3>
+                    <p>No unnecessary jargon. Clear instructions, honest timing, and straightforward language. Your success is our measure.</p>
+                </div>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🌱</div>
+                <div class="value-content">
+                    <h3>Sustainability Matters</h3>
+                    <p>We encourage local sourcing, seasonal eating, and mindful ingredient choices. Great cooking can be responsible cooking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section class="team-section">
+        <div class="team-inner">
+            <div class="team-header">
+                <h2>The Team</h2>
+                <p>Home cooks, professional chefs, and food writers united by a love of Chinese cuisine</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" alt="Mei Chen">
+                    </div>
+                    <h3>Mei Chen</h3>
+                    <div class="team-role">Founder & Recipe Developer</div>
+                    <p class="team-bio">Raised in Chengdu, now teaching authentic Sichuan cooking to the world.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="David Wong">
+                    </div>
+                    <h3>David Wong</h3>
+                    <div class="team-role">Cantonese Cuisine Expert</div>
+                    <p class="team-bio">Third-generation chef from Hong Kong, specializing in dim sum and BBQ.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="Lin Zhang">
+                    </div>
+                    <h3>Lin Zhang</h3>
+                    <div class="team-role">Food Writer & Translator</div>
+                    <p class="team-bio">Preserving regional recipes from her grandmother's kitchen in Fujian.</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-photo">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="James Liu">
+                    </div>
+                    <h3>James Liu</h3>
+                    <div class="team-role">Test Kitchen Director</div>
+                    <p class="team-bio">Ensuring every recipe works in standard home kitchens with common equipment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey -->
+    <section class="journey-section">
+        <div class="journey-inner">
+            <div class="journey-header">
+                <h2>Our Journey</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2020</div>
+                    <h3>The Beginning</h3>
+                    <p>Started as a simple blog sharing family recipes. First viral recipe: mapo tofu that worked every time.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2021</div>
+                    <h3>Building Community</h3>
+                    <p>Reached 100,000 monthly readers. Launched newsletter with weekly authentic recipes and cooking tips.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2022</div>
+                    <h3>Going Global</h3>
+                    <p>Expanded to serve readers in 40+ countries. Launched multi-language ingredient guides for local markets.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2023</div>
+                    <h3>Video Launch</h3>
+                    <p>Started producing cooking videos demonstrating techniques. 1 million+ views on core technique tutorials.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2024</div>
+                    <h3>Where We Are Today</h3>
+                    <p>Over 2 million annual readers, 500+ tested recipes, and a mission to bring Chinese cooking to every home.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="stats-inner">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">500+</div>
+                    <div class="stat-label">Tested Recipes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">2M+</div>
+                    <div class="stat-label">Annual Readers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">40+</div>
+                    <div class="stat-label">Countries Reached</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">98%</div>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-inner">
+            <h2>Join Our Community</h2>
+            <p>Whether you're cooking your first stir-fry or your hundredth, there's always something new to learn.</p>
+            <div class="cta-buttons">
+                <a href="chinese-food-magazine-v2.html" class="cta-btn primary">
+                    Explore Recipes
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#" class="cta-btn secondary">
+                    Subscribe to Newsletter
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <h3>Wok <span>&</span> Roll</h3>
+                <p>Making authentic Chinese cooking accessible to home cooks everywhere since 2020.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="chinese-food-magazine-v2.html">All Recipes</a></li>
+                    <li><a href="techniques.html">Techniques</a></li>
+                    <li><a href="ingredients.html">Ingredients</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Learn</h4>
+                <ul>
+                    <li><a href="#">Getting Started</a></li>
+                    <li><a href="#">Kitchen Essentials</a></li>
+                    <li><a href="#">Technique Tutorials</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#">Newsletter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2024 Wok & Roll. All rights reserved.</span>
+            <span>Made with ❤️ for home cooks everywhere</span>
+        </div>
+    </footer>
+</body>
+</html>
